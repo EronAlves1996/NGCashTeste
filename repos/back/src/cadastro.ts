@@ -1,5 +1,6 @@
 import * as accountsDAO from "./accountsDAO";
 import * as usersDAO from "./usersDAO";
+import { sha256 } from "js-sha256";
 
 export type registerData = {
   username: string;
@@ -18,6 +19,15 @@ export function cadastrar(data: registerData) {
     throw new Error("Username already exists");
   }
 
+  if (
+    data.password.length < 8 ||
+    !data.password.match(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])^[^ ]+$/)
+  ) {
+    throw new Error(
+      "Too short password(at least 8 characters) or must have number and uppercase char"
+    );
+  }
+
   const account: accountsDAO.Account = {
     id: ++accountId,
     balance: new accountsDAO.Money(100),
@@ -25,7 +35,7 @@ export function cadastrar(data: registerData) {
   const user: usersDAO.User = {
     id: ++userId,
     accountId: accountId,
-    password: data.password,
+    password: sha256(data.password),
     username: data.username,
   };
 
