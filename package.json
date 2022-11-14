@@ -1,0 +1,12 @@
+{
+  "name": "ngCashTeste",
+  "version": "1.0.0",
+  "description": "Projeto feito como parte do processo seletivo da ng.cash",
+  "main": "index.js",
+  "author": "Eron Alves",
+  "license": "MIT",
+  "private": true,
+  "workspaces":[
+    "./repos/"
+  ]
+}
