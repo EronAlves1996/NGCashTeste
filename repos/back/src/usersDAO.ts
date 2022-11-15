@@ -16,6 +16,17 @@ export function readById(id: number): User {
   return <User>bancoFake.get(id);
 }
 
+export function readByUsernameAndPassword(
+  username: string,
+  password: string
+): User {
+  return <User>(
+    [...bancoFake.values()].find(
+      (user) => user.username === username && user.password === password
+    )
+  );
+}
+
 export function verifyItExistsByUsername(username: string): boolean {
   return [...bancoFake.values()].some((user) => user.username === username);
 }
