@@ -35,6 +35,14 @@ export function readByDate(id: number, date: string): Transaction[] {
   });
 }
 
+export function readByType(id: number, type: string): Transaction[] {
+  return readById(id).filter((transaction) =>
+    type === "in"
+      ? transaction.creditedAccount === id
+      : transaction.debitedAccount === id
+  );
+}
+
 export function readAll(): Transaction[] {
   return [...bancoFake.values()];
 }

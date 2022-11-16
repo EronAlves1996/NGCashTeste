@@ -113,19 +113,34 @@ app.post("/transferir", (req, res) => {
 });
 
 app.get("/transacoes", (req, res) => {
+  const id = res.locals.accountId;
+  const transactions = transactionsDAO.readById(id);
+  let final = transactions;
+
   if (req.query.date) {
-    res.status(200);
-    res.send(
-      transactionsDAO.readByDate(
-        res.locals.accountId,
-        req.query.date.toString()
-      )
-    );
-  } else if (req.query.type) {
-  } else {
-    res.status(200);
-    res.send(transactionsDAO.readById(res.locals.accountId));
+    const date = new Date(`${req.query.date?.toString()}T00:00`);
+
+    final = final.filter((transaction) => {
+      const year = transaction.createdAt.getFullYear();
+      const month = transaction.createdAt.getMonth();
+      const day = transaction.createdAt.getDate();
+      return (
+        year === date.getFullYear() &&
+        month === date.getMonth() &&
+        day == date.getDate()
+      );
+    });
   }
+
+  if (req.query.type)
+    final = final.filter((transaction) =>
+      req.query.type!.toString() === "in"
+        ? transaction.creditedAccount === id
+        : transaction.debitedAccount === id
+    );
+
+  res.send(200);
+  res.send(final);
 });
 
 app.listen(3000, () => console.log("Listen on port 3000"));
