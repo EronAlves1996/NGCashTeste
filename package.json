@@ -7,6 +7,6 @@
   "license": "MIT",
   "private": true,
   "workspaces":[
-    "./repos/"
+    "back", "front"
   ]
 }
