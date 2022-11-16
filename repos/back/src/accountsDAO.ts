@@ -38,8 +38,17 @@ export function readAll(): Account[] {
   return [...bancoFake.values()];
 }
 
-export function updateById(id: number, user: Account): void {
-  bancoFake.set(id, user);
+export function updateById(id: number, account: Account): void {
+  bancoFake.set(id, account);
+  console.log(
+    "Atualizado: ",
+    "id: ",
+    id,
+    "Conta: ",
+    account,
+    "Valor: ",
+    account.balance.getMoney()
+  );
 }
 
 export function deleteById(id: number) {

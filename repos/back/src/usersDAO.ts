@@ -27,6 +27,10 @@ export function readByUsernameAndPassword(
   );
 }
 
+export function readByUsername(username: string) {
+  return [...bancoFake.values()].find((user) => user.username === username);
+}
+
 export function verifyItExistsByUsername(username: string): boolean {
   return [...bancoFake.values()].some((user) => user.username === username);
 }
