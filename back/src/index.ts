@@ -34,7 +34,7 @@ app.post("/cadastro", (req, res) => {
   } catch (ex) {
     if (ex instanceof Error) {
       res.status(422);
-      res.send(ex.message);
+      res.send({ message: ex.message });
     }
   }
 });
