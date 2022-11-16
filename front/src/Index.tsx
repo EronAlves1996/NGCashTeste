@@ -1,19 +1,30 @@
 import { FormEvent } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { apiCaller } from "./apiCaller";
 
-export function Index() {
-  const handleSubmit = (e: FormEvent) => {
+export function Index({ user, setUser }: any) {
+  const navigate = useNavigate();
+
+  if (user !== null) {
+    navigate("/home");
+  }
+
+  const handleSubmit = async (e: FormEvent) => {
     const data = Object.fromEntries(
       new FormData(e.currentTarget as HTMLFormElement)
     );
     const auth = btoa(
       data.username.toString().concat(`:${data.password.toString()}`)
     );
-    apiCaller("login", "GET", {
+    const response = await apiCaller("login", "GET", {
       "Content-Type": "application/json",
       Authentication: `Basic ${auth}`,
     });
+
+    if (response.status === 200) {
+      setUser(await response.json());
+      navigate("/home");
+    }
   };
 
   return (

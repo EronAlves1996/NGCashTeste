@@ -4,7 +4,7 @@ export async function apiCaller(
   headers: HeadersInit = { "Content-Type": "application/json" },
   body?: Object
 ) {
-  await fetch(import.meta.env.VITE_API_URL + path, {
+  return await fetch(import.meta.env.VITE_API_URL + path, {
     credentials: "include",
     method: method,
     headers: headers,

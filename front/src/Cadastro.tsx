@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { apiCaller } from "./apiCaller";
 
 export function Cadastro() {
@@ -7,6 +8,21 @@ export function Cadastro() {
     repeatedPassword: "",
   });
   const [username, setUsername] = useState("");
+  const navigate = useNavigate();
+  const [errMess, setErrMess] = useState("");
+
+  const validationCriteria: () => boolean = () => {
+    return (
+      username.length >= 3 &&
+      verifyPassword.password.length >= 8 &&
+      !!verifyPassword.password.match(
+        /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])^[^ ]+$/
+      ) &&
+      verifyPassword.password == verifyPassword.repeatedPassword
+    );
+  };
+
+  console.log(validationCriteria());
 
   return (
     <>
@@ -17,7 +33,7 @@ export function Cadastro() {
           type="text"
           id="username"
           name="username"
-          value="username"
+          value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
         {username.length < 3 && (
@@ -35,7 +51,7 @@ export function Cadastro() {
           }}
         />
         {verifyPassword.password.length < 8 &&
-          verifyPassword.password.match(
+          !verifyPassword.password.match(
             /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])^[^ ]+$/
           ) && (
             <span>
@@ -43,6 +59,7 @@ export function Cadastro() {
               maiúscula e um número
             </span>
           )}
+
         <label htmlFor="repeatPassword">Repita sua senha</label>
         <input
           type="password"
@@ -60,8 +77,9 @@ export function Cadastro() {
           <span>Senhas não conferem!</span>
         )}
         <button
-          onClick={() => {
-            apiCaller(
+          type="button"
+          onClick={async () => {
+            const result = await apiCaller(
               "cadastro",
               "POST",
               { "Content-Type": "application/json" },
@@ -70,10 +88,20 @@ export function Cadastro() {
                 password: verifyPassword.password,
               }
             );
+            if (result.status !== 201) {
+              setErrMess(
+                ((await result.json()) as { message: string }).message
+              );
+              return;
+            }
+
+            navigate("/", { state: { message: "Registrado com sucesso!!" } });
           }}
+          disabled={!validationCriteria()}
         >
           Cadastrar
         </button>
+        {errMess && <span>{errMess}</span>}
       </form>
     </>
   );
