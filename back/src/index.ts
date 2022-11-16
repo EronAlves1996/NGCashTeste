@@ -10,6 +10,7 @@ import * as usersDAO from "./usersDAO";
 import * as accountsDAO from "./accountsDAO";
 import * as transactionsDAO from "./transactionsDAO";
 import { makeTransaction } from "./makeTransaction";
+import * as cors from "cors";
 
 dotenv.config();
 
@@ -17,6 +18,13 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(
+  cors({
+    credentials: true,
+    allowedHeaders: ["Content-Type", "Authentication"],
+    origin: process.env.ALLOWED_URL,
+  })
+);
 
 app.post("/cadastro", (req, res) => {
   try {
@@ -32,8 +40,8 @@ app.post("/cadastro", (req, res) => {
 });
 
 app.get("/login", (req, res) => {
-  const authorization = req.headers.authorization;
-  if (!authorization?.startsWith("Basic")) {
+  const authentication: string = req.headers.authentication as string;
+  if (!authentication?.startsWith("Basic")) {
     res.status(400);
     res.send({
       errorMessage:
@@ -41,7 +49,7 @@ app.get("/login", (req, res) => {
     });
   }
 
-  const credentials = atob(<string>authorization?.split(" ")[1]).split(":");
+  const credentials = atob(<string>authentication?.split(" ")[1]).split(":");
   const auth: RegisterData = {
     username: credentials![0],
     password: sha256(credentials![1]),

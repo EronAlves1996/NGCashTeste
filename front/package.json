@@ -1,7 +1,7 @@
 {
   "name": "ngcashfront",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,10 +9,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "cross-env": "5.0.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "cross-env": "5.0.5",
-    "back": "1.0.0"
+    "react-router-dom": "^6.4.3"
   },
   "devDependencies": {
     "@types/react": "^18.0.24",
