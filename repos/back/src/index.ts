@@ -8,6 +8,7 @@ import * as jwt from "jsonwebtoken";
 import * as dotenv from "dotenv";
 import * as usersDAO from "./usersDAO";
 import * as accountsDAO from "./accountsDAO";
+import * as transactionsDAO from "./transactionsDAO";
 import { makeTransaction } from "./makeTransaction";
 
 dotenv.config();
@@ -108,6 +109,22 @@ app.post("/transferir", (req, res) => {
       res.status(400);
       res.send({ message: ex.message });
     }
+  }
+});
+
+app.get("/transacoes", (req, res) => {
+  if (req.query.date) {
+    res.status(200);
+    res.send(
+      transactionsDAO.readByDate(
+        res.locals.accountId,
+        req.query.date.toString()
+      )
+    );
+  } else if (req.query.type) {
+  } else {
+    res.status(200);
+    res.send(transactionsDAO.readById(res.locals.accountId));
   }
 });
 

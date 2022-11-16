@@ -13,6 +13,10 @@ export function makeTransaction(transaction: TransactionData) {
   const from = usersDAO.readByUsername(transaction.transferFrom);
   const to = usersDAO.readByUsername(transaction.transferTo);
 
+  if (!from) {
+    throw new Error("Login not recognized");
+  }
+
   if (!to) {
     throw new Error("Account not exists");
   }
