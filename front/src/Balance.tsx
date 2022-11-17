@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
+import { AccountExposed } from "../../types";
 import { apiCaller } from "./apiCaller";
 
 export function Balance(props: any) {
-  const [account, setAccount] = useState<{ balance: string } | null>(null);
+  const [account, setAccount] = useState<AccountExposed | null>(null);
+
   useEffect(() => {
     (async () => {
       const response = await apiCaller("accountinfo", "GET", {
@@ -10,12 +12,14 @@ export function Balance(props: any) {
       });
       setAccount(await response.json());
     })();
-  }, [account, props.user]);
+  }, [props.user]);
 
   return (
-    <div>
-      <h4>Saldo da conta</h4>
-      <p>{account?.balance}</p>
-    </div>
+    account && (
+      <div>
+        <h4>Saldo da conta</h4>
+        <p>{account?.balance}</p>
+      </div>
+    )
   );
 }

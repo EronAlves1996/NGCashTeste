@@ -1,9 +1,10 @@
 import { FormEvent } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useOutletContext } from "react-router-dom";
 import { apiCaller } from "./apiCaller";
 
-export function Index({ user, setUser }: any) {
+export function Index() {
   const navigate = useNavigate();
+  const [user, setUser]: any[] = useOutletContext();
 
   if (user !== null) {
     navigate("/home");

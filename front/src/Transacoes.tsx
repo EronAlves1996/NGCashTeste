@@ -3,14 +3,16 @@ import { apiCaller } from "./apiCaller";
 import { TransactionExposed } from "../../types";
 
 export function Transacoes(props: any) {
-  const [transacoes, setTransacoes] = useState<Transacoes[]>([]);
+  const [transacoes, setTransacoes] = useState<TransactionExposed[]>([]);
 
   useEffect(() => {
     (async () => {
       const response = await apiCaller("transacoes", "GET", {
         "Content-Type": "applcation/json",
       });
-      setTransacoes(await response.json());
+      const json = await response.json();
+      console.log(json);
+      setTransacoes(json);
     })();
   }, [transacoes]);
 

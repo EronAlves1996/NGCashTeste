@@ -8,7 +8,7 @@ export function App() {
     <>
       <header></header>
       <main>
-        <Outlet />
+        <Outlet context={[user, setUser]} />
       </main>
       <footer></footer>
     </>
