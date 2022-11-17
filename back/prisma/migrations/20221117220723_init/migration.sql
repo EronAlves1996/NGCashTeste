@@ -11,7 +11,7 @@ CREATE TABLE "Users" (
 -- CreateTable
 CREATE TABLE "Accounts" (
     "id" SERIAL NOT NULL,
-    "balance" DOUBLE PRECISION NOT NULL,
+    "balance" DECIMAL(10,2) NOT NULL,
 
     CONSTRAINT "Accounts_pkey" PRIMARY KEY ("id")
 );

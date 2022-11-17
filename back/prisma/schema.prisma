@@ -20,7 +20,7 @@ model Users {
 
 model Accounts {
   id Int @id @default(autoincrement())
-  balance Float
+  balance Decimal @db.Decimal(10, 2)
   user Users?
   deb_transactions Transactions[] @relation("deb_transactions")
   cred_transactions Transactions[] @relation("cred_transactions")
