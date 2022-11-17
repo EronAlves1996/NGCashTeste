@@ -27,17 +27,6 @@ export function Home(props: any) {
       <h2>Bem vindo à sua conta {props.user.username}</h2>
       <Balance user={props.user} />
       <Transferir user={props.user} />
-      <div>
-        <h4>Minhas transações</h4>
-        <label htmlFor="date">Data da transação</label>
-        <input type="date" />
-        <label htmlFor="">
-          <input type="checkbox" /> Créditos
-        </label>
-        <label htmlFor="">
-          <input type="checkbox" /> Débitos
-        </label>
-      </div>
     </>
   );
 }
