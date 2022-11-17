@@ -1,6 +1,7 @@
 import * as accountsDAO from "./accountsDAO";
 import * as usersDAO from "./usersDAO";
 import { sha256 } from "js-sha256";
+import { Account, User } from "../../types";
 
 export type RegisterData = {
   username: string;
@@ -28,11 +29,11 @@ export function cadastrar(data: RegisterData) {
     );
   }
 
-  const account: accountsDAO.Account = {
+  const account: Account = {
     id: ++accountId,
     balance: new accountsDAO.Money(100),
   };
-  const user: usersDAO.User = {
+  const user: User = {
     id: ++userId,
     accountId: accountId,
     password: sha256(data.password),

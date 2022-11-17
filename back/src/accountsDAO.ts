@@ -1,3 +1,5 @@
+import { Account } from "../../types";
+
 export class Money {
   _integers: number;
   _floats: number;
@@ -20,11 +22,6 @@ export class Money {
     return this.getMoney();
   }
 }
-
-export type Account = {
-  id: number;
-  balance: Money;
-};
 
 const bancoFake = new Map();
 

@@ -1,9 +1,4 @@
-export type User = {
-  id: number;
-  username: string;
-  password: string;
-  accountId: number;
-};
+import { User } from "../../types";
 
 const bancoFake: Map<number, User> = new Map();
 

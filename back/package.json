@@ -2,6 +2,7 @@
   "name": "ngcashback",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "server": "tsc && node ./bin/index.js"
   },

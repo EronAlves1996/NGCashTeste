@@ -27,6 +27,7 @@ export function Home(props: any) {
       <h2>Bem vindo à sua conta {props.user.username}</h2>
       <Balance user={props.user} />
       <Transferir user={props.user} />
+      <Transacoes user={props.user} />
     </>
   );
 }

@@ -1,12 +1,5 @@
 import { Money } from "./accountsDAO";
-
-export type Transaction = {
-  id: number;
-  debitedAccount: number;
-  creditedAccount: number;
-  value: Money;
-  createdAt: Date;
-};
+import { Transaction } from "../../types";
 
 const bancoFake = new Map<number, Transaction>();
 

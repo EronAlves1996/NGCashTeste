@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { apiCaller } from "./apiCaller";
+import { TransactionExposed } from "../../types";
 
 export function Transacoes(props: any) {
-  const [transacoes, setTransacoes] = useState([]);
+  const [transacoes, setTransacoes] = useState<Transacoes[]>([]);
 
   useEffect(() => {
     (async () => {
