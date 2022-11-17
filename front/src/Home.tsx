@@ -12,9 +12,10 @@ export function Home(props: any) {
           "Content-Type": "application/json",
         });
         if (response.status === 200) props.setUser(response.json());
-        navigate("/", {
-          state: { message: "Acesso negado! Por favor realizar login" },
-        });
+        else
+          navigate("/", {
+            state: { message: "Acesso negado! Por favor realizar login" },
+          });
       }
     })();
   }, [props.user]);
@@ -22,10 +23,7 @@ export function Home(props: any) {
   return (
     <>
       <h2>Bem vindo à sua conta {props.user.username}</h2>
-      <div>
-        <h4>Saldo da conta</h4>
-        <p>{/*Realizar fetch para pegar o balance*/}</p>
-      </div>
+      <Balance user={props.user} />
       <div>
         <h4>Transferir</h4>
         <form>
