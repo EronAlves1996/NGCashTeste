@@ -1,12 +1,12 @@
-import * as accountsDAO from "./accountsDAO";
-import * as usersDAO from "./usersDAO";
+import * as accountsDAO from "../accountsDAO";
+import * as usersDAO from "../dbAccess/usersDAO";
 import { sha256 } from "js-sha256";
-import { Account, User } from "../../types";
+import { Account, RegisterData, User } from "../../../types";
 
 let accountId = 0;
 let userId = 0;
 
-export function cadastrar(data: RegisterData) {
+export function register(data: RegisterData) {
   if (data.username.length < 3) {
     throw new Error("Username must have at least 3 characters");
   }

@@ -1,8 +1,8 @@
-import { readByUsernameAndPassword } from "./usersDAO";
+import { readByUsernameAndPassword } from "../dbAccess/usersDAO";
 import * as dotenv from "dotenv";
 import * as jwt from "jsonwebtoken";
 import { sha256 } from "js-sha256";
-import { RegisterData, UserExposed } from "../../types";
+import { RegisterData, UserExposed } from "../../../types";
 dotenv.config();
 
 function unencodeCredentials(authentication: string): RegisterData {

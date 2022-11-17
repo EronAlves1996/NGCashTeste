@@ -1,24 +1,40 @@
 import { Router } from "express";
-import { cadastrar } from "./cadastro";
-import { login, unencodeCredentials } from "./login";
-import * as usersDAO from "./usersDAO";
-import * as accountsDAO from "./accountsDAO";
-import { makeTransaction } from "./makeTransaction";
-import * as transactionsDAO from "./transactionsDAO";
-import { RegisterData } from "../../types";
+import { register } from "./services/register";
+import { login } from "./services/login";
+import { makeTransaction } from "./services/makeTransaction";
+import * as transactionsDAO from "./dbAccess/transactionsDAO";
+import { RegisterData, TransactionData } from "../../types";
+import { validate } from "./services/validate";
+import { fetchAccountInfo } from "./services/fetchAccountInfo";
+import * as dotenv from "dotenv";
+import { fetchTransactions } from "./services/fetchTransactions";
+dotenv.config();
 
+const PREFIX = process.env.API_PREFIX;
 const router = Router();
 
 /**
- * Set unguarded routes. Any person can access these endpoints
+ * Exporting a function that is used to register the routes that are not guarded by the JWT token.
+ *
+ * @function
+ * @name registerUnguardedRoutes
+ * @kind function
+ * @returns {void}
+ * @exports
  */
-export function unguardedRoutes(): void {
+export function registerUnguardedRoutes(): void {
   /**
-   * Set route for registering a new user.
+   * Create a route for the 'cadastro' endpoint.
+   * This takes the username and password and attempt to send it to
+   * a function to deal with registering a new user
+   *
+   * @constant
+   * @name router
+   * @type {Router}
    */
-  router.post("/cadastro", (req, res) => {
+  router.post(PREFIX + "cadastro", (req, res) => {
     try {
-      cadastrar(req.body as RegisterData);
+      register(req.body as RegisterData);
       res.status(201);
       res.send("success");
     } catch (ex) {
@@ -30,11 +46,19 @@ export function unguardedRoutes(): void {
   });
 
   /**
-   * Set route for login.
+   * Set 'login' endpoint as a GET method and validate
+   * the header 'authentication' and send to a function to validadet
+   * the credentials
+   *
+   * @constant
+   * @name router
+   * @type {Router}
    */
-  router.get("/login", (req, res) => {
-    const authentication: string = req.headers.authentication as string;
+  router.get(PREFIX + "login", (req, res) => {
     try {
+      if (!req.headers.authentication)
+        throw new Error("Por favor envie autenticação válida");
+      const authentication: string = req.headers.authentication as string;
       const processedLogin = login(authentication);
       res.cookie("jwt-auth", processedLogin.jwt, {
         maxAge: 24 * 60 * 60 * 1000,
@@ -45,7 +69,10 @@ export function unguardedRoutes(): void {
     } catch (ex) {
       if (ex instanceof Error) {
         res.status(400);
-        res.set("WWW-Authenticate", "Basic Login with username and password");
+        res.set(
+          "WWW-Authenticate",
+          "Basic Login deve ser feito com username e senha válidos"
+        );
         res.send({
           errorMessage: ex.message,
         });
@@ -54,30 +81,51 @@ export function unguardedRoutes(): void {
   });
 }
 
-export type TransactionData = {
-  transferFrom: string;
-  transferTo: string;
-  value: number;
-};
-
-export function guardedRoutes() {
-  router.get("/validate", (req, res) => {
+/**
+ * Exporting a function that is used to register the routes that are guarded by the JWT token.
+ *
+ * @function
+ * @name registerGuardedRoutes
+ * @kind function
+ * @returns {void}
+ * @exports
+ */
+export function registerGuardedRoutes() {
+  /**
+   * This is a route that is guarded by the JWT token.
+   * It is used to validate the token and return the user data.
+   *
+   * @constant
+   * @name router
+   * @type {Router}
+   */
+  router.get(PREFIX + "validar", (req, res) => {
     res.status(200);
-    res.send(usersDAO.readById(res.locals.id));
+    res.send(validate(res.locals.id));
   });
 
-  router.get("/accountinfo", (req, res) => {
-    const user = usersDAO.readById(res.locals.accountId);
-    const account = accountsDAO.readById(user.accountId);
+  /**
+   * Getting the account info from the user and sending it to the client
+   *
+   * @constant
+   * @name router
+   * @type {Router}
+   */
+  router.get(PREFIX + "informacaoConta", (req, res) => {
     res.status(200);
-    res.send({ ...account, balance: account.balance.getMoney() });
+    res.send(fetchAccountInfo(res.locals.id));
   });
 
-  router.post("/transferir", (req, res) => {
-    const transaction: TransactionData = {
-      ...req.body,
-      transferFrom: res.locals.username,
-    };
+  /**
+   * Create a route that takes a transaction, validates,
+   * and realize it
+   *
+   * @constant
+   * @name router
+   * @type {Router}
+   */
+  router.post(PREFIX + "transferir", (req, res) => {
+    const transaction: TransactionData = req.body;
     try {
       makeTransaction(transaction);
       res.status(200);
@@ -90,34 +138,21 @@ export function guardedRoutes() {
     }
   });
 
-  router.get("/transacoes", (req, res) => {
-    const id = res.locals.accountId;
-    const transactions = transactionsDAO.readById(id);
-    let final = transactions;
-
-    if (req.query.date) {
-      const date = new Date(`${req.query.date?.toString()}T00:00`);
-
-      final = final.filter((transaction) => {
-        const year = transaction.createdAt.getFullYear();
-        const month = transaction.createdAt.getMonth();
-        const day = transaction.createdAt.getDate();
-        return (
-          year === date.getFullYear() &&
-          month === date.getMonth() &&
-          day == date.getDate()
-        );
-      });
-    }
-
-    if (req.query.type)
-      final = final.filter((transaction) =>
-        req.query.type!.toString() === "in"
-          ? transaction.creditedAccount === id
-          : transaction.debitedAccount === id
-      );
-
+  /**
+   * A route that is guarded by the JWT token. It is used to get the transactions from the user and send it to the client.
+   *
+   * @constant
+   * @name router
+   * @type {Router}
+   */
+  router.get(PREFIX + "transacoes", (req, res) => {
     res.send(200);
-    res.send(final);
+    res.send(
+      fetchTransactions(
+        res.locals.id,
+        req.query.date?.toString(),
+        req.query.type?.toString()
+      )
+    );
   });
 }

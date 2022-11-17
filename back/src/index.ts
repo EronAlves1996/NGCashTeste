@@ -3,7 +3,7 @@ import * as bodyParser from "body-parser";
 import * as cookieParser from "cookie-parser";
 import * as jwt from "jsonwebtoken";
 import * as cors from "cors";
-import { guardedRoutes, unguardedRoutes } from "./routes";
+import { registerGuardedRoutes, registerUnguardedRoutes } from "./routes";
 
 const app = express();
 
@@ -36,10 +36,10 @@ app.use(
   })
 );
 
-unguardedRoutes();
+registerUnguardedRoutes();
 
 app.use(routeGuard);
 
-guardedRoutes();
+registerGuardedRoutes();
 
 app.listen(3000, () => console.log("Listen on port 3000"));

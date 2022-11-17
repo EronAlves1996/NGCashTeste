@@ -1,7 +1,7 @@
-import { TransactionData } from ".";
+import { TransactionData } from "..";
 import * as accountsDAO from "./accountsDAO";
-import * as usersDAO from "./usersDAO";
-import * as transactionsDAO from "./transactionsDAO";
+import * as usersDAO from "../dbAccess/usersDAO";
+import * as transactionsDAO from "../dbAccess/transactionsDAO";
 
 let transactionId = 0;
 

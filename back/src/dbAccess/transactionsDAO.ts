@@ -1,5 +1,5 @@
 import { Money } from "./accountsDAO";
-import { Transaction } from "../../types";
+import { Transaction } from "../../../types";
 
 const bancoFake = new Map<number, Transaction>();
 
