@@ -11,24 +11,27 @@ datasource db {
 }
 
 model Users {
-  id Int @Id @default(autoincrement())
+  id Int @id @default(autoincrement())
   username String @unique
   password String
   account Accounts @relation(fields: [account_id], references: [id])
-  account_id Int 
+  account_id Int @unique
 }
 
 model Accounts {
-  id Int @Id @default(autoincrement())
+  id Int @id @default(autoincrement())
   balance Float
+  user Users?
+  deb_transactions Transactions[] @relation("deb_transactions")
+  cred_transactions Transactions[] @relation("cred_transactions")
 }
 
 model Transactions {
-  id Int @Id @default(autoincrement())
-  debited_account_id Int
-  debited_account Accounts @relation(name: "debited_account",fields: [debited_account_id], references: [id])
-  credited_account_id Int
-  credited_account Accounts @relation(name: "credited_account", fields: [debited_account_id], references: [id])
+  id Int @id @default(autoincrement())
+  debited_account_id Int @unique
+  debited_account Accounts @relation(name:"deb_transactions", fields: [debited_account_id], references: [id])
+  credited_account_id Int @unique
+  credited_account Accounts @relation(name: "cred_transactions", fields: [credited_account_id], references: [id])
   value Float
   created_at DateTime
 }
