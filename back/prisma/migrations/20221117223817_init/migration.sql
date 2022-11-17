@@ -21,7 +21,7 @@ CREATE TABLE "Transactions" (
     "id" SERIAL NOT NULL,
     "debited_account_id" INTEGER NOT NULL,
     "credited_account_id" INTEGER NOT NULL,
-    "value" DOUBLE PRECISION NOT NULL,
+    "value" DECIMAL(10,2) NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Transactions_pkey" PRIMARY KEY ("id")

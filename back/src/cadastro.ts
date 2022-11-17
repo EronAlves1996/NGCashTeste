@@ -3,11 +3,6 @@ import * as usersDAO from "./usersDAO";
 import { sha256 } from "js-sha256";
 import { Account, User } from "../../types";
 
-export type RegisterData = {
-  username: string;
-  password: string;
-};
-
 let accountId = 0;
 let userId = 0;
 

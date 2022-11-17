@@ -6,6 +6,7 @@ import * as cors from "cors";
 import { guardedRoutes, unguardedRoutes } from "./routes";
 
 const app = express();
+
 const routeGuard: express.RequestHandler = (req, res, next) => {
   try {
     const auth = req.cookies["jwt-auth"];

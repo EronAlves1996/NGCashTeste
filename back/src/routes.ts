@@ -1,15 +1,21 @@
 import { Router } from "express";
-import { sha256 } from "js-sha256";
-import { cadastrar, RegisterData } from "./cadastro";
-import { login } from "./login";
+import { cadastrar } from "./cadastro";
+import { login, unencodeCredentials } from "./login";
 import * as usersDAO from "./usersDAO";
 import * as accountsDAO from "./accountsDAO";
 import { makeTransaction } from "./makeTransaction";
 import * as transactionsDAO from "./transactionsDAO";
+import { RegisterData } from "../../types";
 
 const router = Router();
 
+/**
+ * Set unguarded routes. Any person can access these endpoints
+ */
 export function unguardedRoutes(): void {
+  /**
+   * Set route for registering a new user.
+   */
   router.post("/cadastro", (req, res) => {
     try {
       cadastrar(req.body as RegisterData);
@@ -23,35 +29,26 @@ export function unguardedRoutes(): void {
     }
   });
 
+  /**
+   * Set route for login.
+   */
   router.get("/login", (req, res) => {
     const authentication: string = req.headers.authentication as string;
-    if (!authentication?.startsWith("Basic")) {
-      res.status(400);
-      res.send({
-        errorMessage:
-          "Please check the validation method for this authentication",
-      });
-    }
-
-    const credentials = atob(<string>authentication?.split(" ")[1]).split(":");
-    const auth: RegisterData = {
-      username: credentials![0],
-      password: sha256(credentials![1]),
-    };
-
     try {
-      const jwtPayload = login(auth);
-      const user = usersDAO.readByUsername(auth.username);
-      res.cookie("jwt-auth", jwtPayload, {
+      const processedLogin = login(authentication);
+      res.cookie("jwt-auth", processedLogin.jwt, {
         maxAge: 24 * 60 * 60 * 1000,
         httpOnly: true,
       });
       res.status(200);
-      res.send(user);
+      res.send(processedLogin.user);
     } catch (ex) {
       if (ex instanceof Error) {
-        res.status(401);
-        res.send({ status: ex.message });
+        res.status(400);
+        res.set("WWW-Authenticate", "Basic Login with username and password");
+        res.send({
+          errorMessage: ex.message,
+        });
       }
     }
   });
