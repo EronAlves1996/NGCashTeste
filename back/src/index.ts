@@ -57,12 +57,13 @@ app.get("/login", (req, res) => {
 
   try {
     const jwtPayload = login(auth);
+    const user = usersDAO.readByUsername(auth.username);
     res.cookie("jwt-auth", jwtPayload, {
       maxAge: 24 * 60 * 60 * 1000,
       httpOnly: true,
     });
     res.status(200);
-    res.send({ status: "Successfully logged in" });
+    res.send(user);
   } catch (ex) {
     if (ex instanceof Error) {
       res.status(401);
@@ -95,6 +96,11 @@ export type TransactionData = {
   transferTo: string;
   value: number;
 };
+
+app.get("/validate", (req, res) => {
+  res.status(200);
+  res.send(usersDAO.readById(res.locals.id));
+});
 
 app.get("/accountinfo", (req, res) => {
   const user = usersDAO.readById(res.locals.accountId);

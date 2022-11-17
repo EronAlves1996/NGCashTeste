@@ -10,12 +10,14 @@ import "./index.css";
 import { Index } from "./Index";
 import { App } from "./App";
 import { Cadastro } from "./Cadastro";
+import { Home } from "./Home";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       <Route index element={<Index />} />
       <Route path="/cadastro" element={<Cadastro />} />
+      <Route path="/home" element={<Home />} />
     </Route>
   )
 );
