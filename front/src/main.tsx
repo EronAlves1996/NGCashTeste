@@ -10,7 +10,7 @@ import "./index.css";
 import { Index } from "./Index";
 import { App } from "./App";
 import { Cadastro } from "./Cadastro";
-import { Home } from "./Home";
+import { Home } from "./GuardedComps/Home";
 
 const router = createBrowserRouter(
   createRoutesFromElements(

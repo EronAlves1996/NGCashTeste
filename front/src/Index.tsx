@@ -1,10 +1,29 @@
-import { FormEvent } from "react";
+import React, { FormEvent, useEffect } from "react";
 import { Link, useNavigate, useOutletContext } from "react-router-dom";
+import { UserExposed } from "../../types";
+import { useUser } from "./App";
 import { apiCaller } from "./utils/apiCaller";
 
 export function Index() {
-  const [user, setUser]: any[] = useOutletContext();
+  const [user, setUser] = useUser();
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    (async () => {
+      if (user === null) {
+        const response = await apiCaller("validate", "GET", {
+          "Content-Type": "application/json",
+        });
+        if (response.status === 200)
+          setUser((await response.json()) as UserExposed);
+        else
+          navigate("/", {
+            state: { message: "Acesso negado! Por favor realizar login" },
+          });
+      }
+    })();
+  }, [user]);
 
   if (user !== null) {
     navigate("/home");

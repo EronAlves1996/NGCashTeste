@@ -1,12 +1,14 @@
 import { useEffect } from "react";
-import { useNavigate, useOutletContext } from "react-router-dom";
-import { apiCaller } from "./utils/apiCaller";
+import { useNavigate } from "react-router-dom";
+import { UserExposed } from "../../../types";
+import { useUser } from "../App";
+import { apiCaller } from "../utils/apiCaller";
 import { Balance } from "./Balance";
 import { Transacoes } from "./Transacoes";
 import { Transferir } from "./Transferir";
 
 export function Home() {
-  const [user, setUser]: any[] = useOutletContext();
+  const [user, setUser] = useUser();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -15,7 +17,8 @@ export function Home() {
         const response = await apiCaller("validate", "GET", {
           "Content-Type": "application/json",
         });
-        if (response.status === 200) setUser(response.json());
+        if (response.status === 200)
+          setUser((await response.json()) as UserExposed);
         else
           navigate("/", {
             state: { message: "Acesso negado! Por favor realizar login" },
