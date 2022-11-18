@@ -1,9 +1,8 @@
 import { Router } from "express";
 import * as dotenv from "dotenv";
 import { register } from "../services/register";
-import { RegisterData } from "../../../types";
+import { RegisterDataExposed } from "../../../types";
 import { login } from "../services/login";
-import { runInThisContext } from "vm";
 dotenv.config();
 const PREFIX = process.env.API_PREFIX;
 
@@ -19,7 +18,7 @@ const router = Router();
  * @type {Router}
  */
 router.post(PREFIX + "cadastro", (req, res) => {
-  register(req.body as RegisterData)
+  register(req.body as RegisterDataExposed)
     .then((_) => {
       res.status(201);
       res.send({ message: "Successfully registered" });

@@ -1,11 +1,17 @@
-import { Money } from "./back/src/accountsDAO";
+export declare type AccountExposed = {
+  id?: number;
+  balance: number;
+};
 
-export declare type Transaction = {
-  id: number;
-  debitedAccount: number;
-  creditedAccount: number;
-  value: Money;
-  createdAt: Date;
+export declare type RegisterDataExposed = {
+  username: string;
+  password: string;
+};
+
+export declare type UserExposed = {
+  id?: number;
+  username: string;
+  accountId: number;
 };
 
 export declare type TransactionExposed = {
@@ -16,19 +22,8 @@ export declare type TransactionExposed = {
   createdAt: string;
 };
 
-export declare type Account = {
-  id: number;
-  balance: Money;
-};
-
-export declare type User = {
-  id: number;
-  username: string;
-  password: string;
-  accountId: number;
-};
-
-export declare type AccountExposed = {
-  id: number;
-  balance: number;
+export declare type TransactionDataExposed = {
+  transferFrom: string;
+  transferTo: string;
+  value: number;
 };

@@ -1,0 +1,9 @@
+services:
+  db:
+    image: "postgres:latest"
+    restart: "always"
+    environment:
+      POSTGRES_PASSWORD: "182596"
+      POSTGRES_DB: "ngcashdb"
+    ports:
+      - "5432:5432"

@@ -1,10 +1,11 @@
+import { TransactionExposed } from "../../../types";
 import { transactions, users } from "./dbAccess";
 
 export async function fetchTransactions(
   id: number,
   date?: string,
   type?: string
-) {
+): Promise<TransactionExposed[]> {
   const user = await users.findFirst({ where: { id: id } });
 
   let trans = await transactions.findMany({
@@ -17,6 +18,25 @@ export async function fetchTransactions(
           debited_account: { user: { id: id } },
         },
       ],
+    },
+    select: {
+      id: true,
+      value: true,
+      created_at: true,
+      credited_account: {
+        select: {
+          user: {
+            select: {
+              username: true,
+            },
+          },
+        },
+      },
+      debited_account: {
+        select: {
+          user: { select: { username: true } },
+        },
+      },
     },
   });
 
@@ -39,10 +59,18 @@ export async function fetchTransactions(
   if (type) {
     trans = trans.filter((transaction) =>
       type === "in"
-        ? transaction.credited_account_id === user?.account_id
-        : transaction.debited_account_id === user?.account_id
+        ? transaction.credited_account.user?.username === user?.username
+        : transaction.debited_account.user?.username === user?.account_id
     );
   }
 
-  return trans;
+  return trans.map((t) => {
+    return {
+      createdAt: t.created_at.toString(),
+      from: t.debited_account.user?.username!,
+      to: t.credited_account.user?.username!,
+      id: t.id,
+      value: t.value.toNumber(),
+    };
+  });
 }

@@ -1,8 +1,8 @@
 import { sha256 } from "js-sha256";
-import { RegisterData } from "../../../types";
+import { RegisterDataExposed } from "../../../types";
 import { users } from "./dbAccess";
 
-export async function register(data: RegisterData) {
+export async function register(data: RegisterDataExposed) {
   if (data.username.length < 3) {
     throw new Error("Username must have at least 3 characters");
   }

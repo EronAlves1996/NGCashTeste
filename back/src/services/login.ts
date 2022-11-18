@@ -1,11 +1,11 @@
 import * as dotenv from "dotenv";
 import * as jwt from "jsonwebtoken";
 import { sha256 } from "js-sha256";
-import { RegisterData, UserExposed } from "../../../types";
+import { RegisterDataExposed, UserExposed } from "../../../types";
 import { users } from "./dbAccess";
 dotenv.config();
 
-function unencodeCredentials(authentication: string): RegisterData {
+function unencodeCredentials(authentication: string): RegisterDataExposed {
   if (!authentication?.startsWith("Basic")) {
     throw new Error("Invalid authentication");
   }

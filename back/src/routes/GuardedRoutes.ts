@@ -2,7 +2,7 @@ import { Router } from "express";
 import * as dotenv from "dotenv";
 import { validate } from "../services/validate";
 import { fetchAccountInfo } from "../services/fetchAccountInfo";
-import { TransactionData } from "../../../types";
+import { TransactionDataExposed } from "../../../types";
 import { makeTransaction } from "../services/makeTransaction";
 import { fetchTransactions } from "../services/fetchTransactions";
 dotenv.config();
@@ -43,7 +43,7 @@ router.get(PREFIX + "informacaoConta", async (req, res) => {
  * @type {Router}
  */
 router.post(PREFIX + "transferir", (req, res) => {
-  const transaction: TransactionData = req.body;
+  const transaction: TransactionDataExposed = req.body;
   makeTransaction(transaction, res.locals.username)
     .then((_) => {
       res.status(200);

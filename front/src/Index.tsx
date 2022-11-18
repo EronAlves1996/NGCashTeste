@@ -3,8 +3,8 @@ import { Link, useNavigate, useOutletContext } from "react-router-dom";
 import { apiCaller } from "./apiCaller";
 
 export function Index() {
-  const navigate = useNavigate();
   const [user, setUser]: any[] = useOutletContext();
+  const navigate = useNavigate();
 
   if (user !== null) {
     navigate("/home");

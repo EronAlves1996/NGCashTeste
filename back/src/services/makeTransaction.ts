@@ -1,9 +1,9 @@
 import { Prisma } from "@prisma/client";
-import { TransactionData } from "../../../types";
+import { TransactionDataExposed } from "../../../types";
 import { accounts, transactions, users } from "./dbAccess";
 
 export async function makeTransaction(
-  transaction: TransactionData,
+  transaction: TransactionDataExposed,
   username: string
 ) {
   if (transaction.transferFrom === transaction.transferTo) {
