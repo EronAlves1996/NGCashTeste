@@ -1,8 +1,6 @@
-import { Accounts, PrismaClient } from "@prisma/client";
+import { Accounts } from "@prisma/client";
+import { accounts } from "./dbAccess";
 
 export async function fetchAccountInfo(id: number): Promise<Accounts> {
-  const prisma = new PrismaClient();
-  return <Accounts>(
-    await prisma.accounts.findFirst({ where: { user: { id: id } } })
-  );
+  return <Accounts>await accounts.findFirst({ where: { user: { id: id } } });
 }

@@ -1,12 +1,12 @@
 import { UserExposed } from "../../../types";
-import * as usersDAO from "../dbAccess/usersDAO";
+import { users } from "./dbAccess";
 
-export function validate(id: number): UserExposed {
-  const user = usersDAO.readById(id);
+export async function validate(id: number): Promise<UserExposed> {
+  const user = await users.findFirst({ where: { id: id } });
 
   return {
-    accountId: user.accountId,
-    id: user.id,
-    username: user.username,
+    accountId: user?.account_id as number,
+    id: user?.id,
+    username: user?.username as string,
   };
 }

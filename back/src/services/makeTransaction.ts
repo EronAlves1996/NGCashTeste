@@ -1,17 +1,25 @@
-import { TransactionData } from "..";
-import * as accountsDAO from "./accountsDAO";
-import * as usersDAO from "../dbAccess/usersDAO";
-import * as transactionsDAO from "../dbAccess/transactionsDAO";
+import { Prisma } from "@prisma/client";
+import { TransactionData } from "../../../types";
+import { accounts, transactions, users } from "./dbAccess";
 
-let transactionId = 0;
-
-export function makeTransaction(transaction: TransactionData) {
+export async function makeTransaction(
+  transaction: TransactionData,
+  username: string
+) {
   if (transaction.transferFrom === transaction.transferTo) {
     throw new Error("Cannot make a transaction against yourself");
   }
 
-  const from = usersDAO.readByUsername(transaction.transferFrom);
-  const to = usersDAO.readByUsername(transaction.transferTo);
+  if (transaction.transferFrom !== username) {
+    throw new Error("You can only make a transaction from your account");
+  }
+
+  const from = await users.findFirst({
+    where: { username: transaction.transferFrom },
+  });
+  const to = await users.findFirst({
+    where: { username: transaction.transferTo },
+  });
 
   if (!from) {
     throw new Error("Login not recognized");
@@ -21,38 +29,47 @@ export function makeTransaction(transaction: TransactionData) {
     throw new Error("Account not exists");
   }
 
-  const fromAccount = accountsDAO.readById(from?.accountId as number);
-  const toAccount = accountsDAO.readById(to?.accountId as number);
+  const fromAccount = await accounts.findFirst({
+    where: { id: from.account_id },
+  });
+  const toAccount = await accounts.findFirst({
+    where: { id: to.account_id },
+  });
 
-  if (fromAccount.balance.getMoney() < transaction.value) {
+  if (fromAccount?.balance!.lessThan(new Prisma.Decimal(transaction.value))) {
     throw new Error("Not enough money to transfer");
   }
 
-  accountsDAO.updateById(
-    fromAccount.id,
-    (() => {
-      fromAccount.balance.setMoney(
-        fromAccount.balance.getMoney() - transaction.value
-      );
-      return fromAccount;
-    })()
-  );
+  await accounts.update({
+    data: {
+      ...fromAccount,
+      balance: fromAccount?.balance.minus(
+        new Prisma.Decimal(transaction.value)
+      ),
+    },
+    where: { id: fromAccount?.id },
+  });
 
-  accountsDAO.updateById(
-    toAccount.id,
-    (() => {
-      toAccount.balance.setMoney(
-        toAccount.balance.getMoney() + transaction.value
-      );
-      return toAccount;
-    })()
-  );
+  await accounts.update({
+    data: {
+      ...toAccount,
+      balance: toAccount?.balance.plus(new Prisma.Decimal(transaction.value)),
+    },
+    where: { id: toAccount?.id },
+  });
 
-  transactionsDAO.create({
-    createdAt: new Date(),
-    creditedAccount: to?.id,
-    debitedAccount: <number>from?.id,
-    id: ++transactionId,
-    value: new accountsDAO.Money(transaction.value),
+  await transactions.create({
+    data: {
+      created_at: new Date(),
+      value: new Prisma.Decimal(transaction.value),
+      credited_account: {
+        connect: { id: toAccount?.id },
+      },
+      debited_account: {
+        connect: {
+          id: fromAccount?.id,
+        },
+      },
+    },
   });
 }

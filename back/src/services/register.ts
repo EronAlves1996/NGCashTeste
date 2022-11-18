@@ -1,18 +1,10 @@
-import * as accountsDAO from "../accountsDAO";
-import * as usersDAO from "../dbAccess/usersDAO";
 import { sha256 } from "js-sha256";
-import { Account, RegisterData, User } from "../../../types";
+import { RegisterData } from "../../../types";
+import { users } from "./dbAccess";
 
-let accountId = 0;
-let userId = 0;
-
-export function register(data: RegisterData) {
+export async function register(data: RegisterData) {
   if (data.username.length < 3) {
     throw new Error("Username must have at least 3 characters");
-  }
-
-  if (usersDAO.verifyItExistsByUsername(data.username)) {
-    throw new Error("Username already exists");
   }
 
   if (
@@ -24,17 +16,17 @@ export function register(data: RegisterData) {
     );
   }
 
-  const account: Account = {
-    id: ++accountId,
-    balance: new accountsDAO.Money(100),
-  };
-  const user: User = {
-    id: ++userId,
-    accountId: accountId,
-    password: sha256(data.password),
-    username: data.username,
-  };
+  const user = await users.create({
+    data: {
+      password: sha256(data.password),
+      username: data.username,
+      account: {
+        create: {
+          balance: 100,
+        },
+      },
+    },
+  });
 
-  usersDAO.create(user);
-  accountsDAO.create(account);
+  console.log(user);
 }

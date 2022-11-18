@@ -1,8 +1,8 @@
-import { readByUsernameAndPassword } from "../dbAccess/usersDAO";
 import * as dotenv from "dotenv";
 import * as jwt from "jsonwebtoken";
 import { sha256 } from "js-sha256";
 import { RegisterData, UserExposed } from "../../../types";
+import { users } from "./dbAccess";
 dotenv.config();
 
 function unencodeCredentials(authentication: string): RegisterData {
@@ -16,15 +16,22 @@ function unencodeCredentials(authentication: string): RegisterData {
   };
 }
 
-export function login(auth: string): { jwt: string; user: UserExposed } {
+export async function login(
+  auth: string
+): Promise<{ jwt: string; user: UserExposed }> {
   const credentials = unencodeCredentials(auth);
-  const userFinded = readByUsernameAndPassword(
-    credentials.username,
-    credentials.password
-  );
+  const userFinded = await users.findFirst({
+    where: {
+      AND: [
+        { username: credentials.username },
+        { password: credentials.password },
+      ],
+    },
+  });
+
   if (userFinded) {
     const payload = {
-      accountId: userFinded.accountId,
+      accountId: userFinded.id,
       username: userFinded.username,
     };
     return {
@@ -32,7 +39,7 @@ export function login(auth: string): { jwt: string; user: UserExposed } {
         expiresIn: "24h",
       }),
       user: {
-        accountId: userFinded.accountId,
+        accountId: userFinded.account_id,
         username: userFinded.username,
         id: userFinded.id,
       },

@@ -3,7 +3,11 @@ import * as bodyParser from "body-parser";
 import * as cookieParser from "cookie-parser";
 import * as jwt from "jsonwebtoken";
 import * as cors from "cors";
-import { registerGuardedRoutes, registerUnguardedRoutes } from "./routes";
+import * as dotenv from "dotenv";
+import guardedRoutes from "./routes/GuardedRoutes";
+import unguardedRoutes from "./routes/UnguardedRoutes";
+
+dotenv.config();
 
 const app = express();
 
@@ -15,7 +19,7 @@ const routeGuard: express.RequestHandler = (req, res, next) => {
       accountId: number;
       username: string;
     };
-    res.locals.accountId = payload.accountId;
+    res.locals.id = payload.accountId;
     res.locals.username = payload.username;
     next();
   } catch (ex) {
@@ -36,10 +40,10 @@ app.use(
   })
 );
 
-registerUnguardedRoutes();
+app.use(unguardedRoutes);
 
-app.use(routeGuard);
+app.use("/api", routeGuard);
 
-registerGuardedRoutes();
+app.use(guardedRoutes);
 
 app.listen(3000, () => console.log("Listen on port 3000"));
