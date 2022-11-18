@@ -5,6 +5,7 @@ import { fetchAccountInfo } from "../services/fetchAccountInfo";
 import { TransactionDataExposed } from "../../../types";
 import { makeTransaction } from "../services/makeTransaction";
 import { fetchTransactions } from "../services/fetchTransactions";
+import { request } from "http";
 dotenv.config();
 
 const router = Router();
@@ -75,4 +76,9 @@ router.get(PREFIX + "transacoes", async (req, res) => {
   );
 });
 
+router.get(PREFIX + "logout", (req, res) => {
+  res.cookie("jwt-auth", "", { maxAge: 0 });
+  res.status(200);
+  res.send({ message: "Deslogado com sucesso" });
+});
 export default router;

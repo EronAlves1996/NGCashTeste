@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { apiCaller } from "./apiCaller";
+import { apiCaller } from "./utils/apiCaller";
 
 export function Cadastro() {
   const [verifyPassword, setVerifyPassword] = useState({

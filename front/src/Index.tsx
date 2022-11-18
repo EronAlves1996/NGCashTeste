@@ -1,6 +1,6 @@
 import { FormEvent } from "react";
 import { Link, useNavigate, useOutletContext } from "react-router-dom";
-import { apiCaller } from "./apiCaller";
+import { apiCaller } from "./utils/apiCaller";
 
 export function Index() {
   const [user, setUser]: any[] = useOutletContext();

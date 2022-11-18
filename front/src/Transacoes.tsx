@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { apiCaller } from "./apiCaller";
+import { apiCaller } from "./utils/apiCaller";
 import { TransactionExposed } from "../../types";
 
 export function Transacoes(props: any) {

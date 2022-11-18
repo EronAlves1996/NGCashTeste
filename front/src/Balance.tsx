@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { AccountExposed } from "../../types";
-import { apiCaller } from "./apiCaller";
+import { apiCaller } from "./utils/apiCaller";
 
 export function Balance(props: any) {
   const [account, setAccount] = useState<AccountExposed | null>(null);

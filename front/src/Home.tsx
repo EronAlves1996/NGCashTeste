@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
-import { apiCaller } from "./apiCaller";
+import { apiCaller } from "./utils/apiCaller";
 import { Balance } from "./Balance";
 import { Transacoes } from "./Transacoes";
 import { Transferir } from "./Transferir";
