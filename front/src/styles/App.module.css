@@ -22,3 +22,15 @@ footer {
 footer {
   margin: auto 0 0 0;
 }
+
+main {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.sub-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}

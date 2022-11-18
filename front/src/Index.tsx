@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { UserExposed } from "../../types";
 import { useUser } from "./App";
 import { apiCaller } from "./utils/apiCaller";
+import styles from "./styles/Index.module.css";
 
 export function Index() {
   const [user, setUser] = useUser();
@@ -49,22 +50,30 @@ export function Index() {
 
   return (
     <>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleSubmit(e);
-        }}
-      >
-        <label htmlFor="">Username:</label>
-        <input type="text" name="username" id="username" />
-        <label htmlFor="">Senha:</label>
-        <input type="password" name="password" id="password" />
-        <button type="submit">Fazer login</button>
-      </form>
-      <div>
-        <p>
-          Ainda não é usuário? <Link to="/cadastro">Cadastre-se</Link>
-        </p>
+      <div className={styles["container"]}>
+        <div className={styles["sub-container"]}>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSubmit(e);
+            }}
+          >
+            <div>
+              <label htmlFor="username">Username:</label>
+              <input type="text" name="username" id={styles["username"]} />
+            </div>
+            <div>
+              <label htmlFor="password">Senha:</label>
+              <input type="password" name="password" id={styles["password"]} />
+            </div>
+            <button type="submit">Fazer login</button>
+          </form>
+          <div className={styles["register"]}>
+            <p>
+              Ainda não é usuário? <Link to="/cadastro">Cadastre-se</Link>
+            </p>
+          </div>
+        </div>
       </div>
     </>
   );

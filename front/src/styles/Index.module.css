@@ -1,0 +1,26 @@
+form {
+  display: flex;
+  flex-direction: column;
+  margin: auto 0 1rem 0;
+  align-content: center;
+}
+
+.container {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  padding: 0 5rem;
+  margin: auto 0;
+}
+
+.sub-container {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+}
+
+.register {
+  margin: 0 0 auto 0;
+}

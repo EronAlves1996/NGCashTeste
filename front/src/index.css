@@ -1,6 +1,9 @@
+@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap");
+
 * {
   margin: 0;
   padding: 0;
+  font-family: "Raleway", sans-serif;
 }
 
 :root {
@@ -72,4 +75,18 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+label {
+  display: block;
+  font-size: large;
+  padding: 0.5rem;
+}
+
+input {
+  border: none;
+  border-radius: 5px;
+  font-size: large;
+  padding: 1rem;
+  margin: 0 0 1rem 0;
 }
