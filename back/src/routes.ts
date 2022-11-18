@@ -2,7 +2,6 @@ import { Router } from "express";
 import { register } from "./services/register";
 import { login } from "./services/login";
 import { makeTransaction } from "./services/makeTransaction";
-import * as transactionsDAO from "./dbAccess/transactionsDAO";
 import { RegisterData, TransactionData } from "../../types";
 import { validate } from "./services/validate";
 import { fetchAccountInfo } from "./services/fetchAccountInfo";
@@ -111,9 +110,9 @@ export function registerGuardedRoutes() {
    * @name router
    * @type {Router}
    */
-  router.get(PREFIX + "informacaoConta", (req, res) => {
+  router.get(PREFIX + "informacaoConta", async (req, res) => {
     res.status(200);
-    res.send(fetchAccountInfo(res.locals.id));
+    res.send(await fetchAccountInfo(res.locals.id));
   });
 
   /**
