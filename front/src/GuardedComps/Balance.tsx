@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { AccountExposed } from "../../types";
-import { apiCaller } from "./utils/apiCaller";
+import { AccountExposed, UserExposed } from "../../../types";
+import { apiCaller } from "../utils/apiCaller";
 
-export function Balance(props: any) {
+export function Balance({ user }: { user: UserExposed }) {
   const [account, setAccount] = useState<AccountExposed | null>(null);
 
   useEffect(() => {
@@ -10,9 +10,9 @@ export function Balance(props: any) {
       const response = await apiCaller("accountinfo", "GET", {
         "Content-Type": "application/json",
       });
-      setAccount(await response.json());
+      setAccount((await response.json()) as AccountExposed);
     })();
-  }, [props.user]);
+  }, [user]);
 
   return (
     account && (

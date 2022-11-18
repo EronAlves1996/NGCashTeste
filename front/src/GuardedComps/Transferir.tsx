@@ -1,7 +1,8 @@
 import { useState } from "react";
+import { TransactionDataExposed, UserExposed } from "../../../types";
 import { apiCaller } from "../utils/apiCaller";
 
-export function Transferir(props: any) {
+export function Transferir({ user }: { user: UserExposed }) {
   const [username, setUsername] = useState("");
   const [value, setValue] = useState(0);
   const [message, setMessage] = useState("");
@@ -38,7 +39,8 @@ export function Transferir(props: any) {
               {
                 transferTo: username,
                 value: value,
-              }
+                transferFrom: user.username,
+              } as TransactionDataExposed
             );
             setMessage((await response.json()).message);
             setUsername("");
