@@ -1,0 +1,24 @@
+header {
+  background-color: #466456;
+  padding: 1.5rem 1%;
+}
+
+footer {
+  justify-self: flex-end;
+  background-color: #50808e;
+  padding: 1.5rem 1%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+}
+
+footer {
+  margin: auto 0 0 0;
+}

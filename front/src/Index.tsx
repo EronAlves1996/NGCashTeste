@@ -1,5 +1,5 @@
-import React, { FormEvent, useEffect } from "react";
-import { Link, useNavigate, useOutletContext } from "react-router-dom";
+import { FormEvent, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { UserExposed } from "../../types";
 import { useUser } from "./App";
 import { apiCaller } from "./utils/apiCaller";
@@ -12,7 +12,7 @@ export function Index() {
   useEffect(() => {
     (async () => {
       if (user === null) {
-        const response = await apiCaller("validate", "GET", {
+        const response = await apiCaller("validar", "GET", {
           "Content-Type": "application/json",
         });
         if (response.status === 200)

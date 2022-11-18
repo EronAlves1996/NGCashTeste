@@ -14,7 +14,7 @@ export function Home() {
   useEffect(() => {
     (async () => {
       if (user === null) {
-        const response = await apiCaller("validate", "GET", {
+        const response = await apiCaller("validar", "GET", {
           "Content-Type": "application/json",
         });
         if (response.status === 200)

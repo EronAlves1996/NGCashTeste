@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { apiCaller } from "./utils/apiCaller";
-import { TransactionExposed } from "../../types";
+import { TransactionExposed } from "../../../types";
+import { apiCaller } from "../utils/apiCaller";
+import "./Transacoes.css";
 
 export function Transacoes(props: any) {
   const [transacoes, setTransacoes] = useState<TransactionExposed[]>([]);
@@ -11,10 +12,9 @@ export function Transacoes(props: any) {
         "Content-Type": "applcation/json",
       });
       const json = await response.json();
-      console.log(json);
       setTransacoes(json);
     })();
-  }, [transacoes]);
+  }, [props.user]);
 
   const digestDate = (date: string) => {
     const d = new Date(date);
@@ -76,8 +76,8 @@ export function Transacoes(props: any) {
           <tfoot>
             <tr>
               <td colSpan={2}>Totais: </td>
-              <td>{totais.credited}</td>
               <td>{totais.debited}</td>
+              <td>{totais.credited}</td>
             </tr>
           </tfoot>
         </table>
