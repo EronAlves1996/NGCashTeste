@@ -6,7 +6,7 @@ import {
   Route,
   createRoutesFromElements,
 } from "react-router-dom";
-import "./index.css";
+import "./styles/index.css";
 import { Index } from "./Index";
 import { App } from "./App";
 import { Cadastro } from "./Cadastro";

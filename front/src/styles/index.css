@@ -52,7 +52,7 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: #004937;
   cursor: pointer;
   transition: border-color 0.25s;
 }
@@ -62,19 +62,6 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
 }
 
 label {
@@ -89,4 +76,6 @@ input {
   font-size: large;
   padding: 1rem;
   margin: 0 0 1rem 0;
+  background-color: #2b2a33;
+  color: #e2e2e2;
 }

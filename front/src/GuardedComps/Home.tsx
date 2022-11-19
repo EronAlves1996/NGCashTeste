@@ -6,6 +6,7 @@ import { apiCaller } from "../utils/apiCaller";
 import { Balance } from "./Balance";
 import { Transacoes } from "./Transacoes";
 import { Transferir } from "./Transferir";
+import styles from "../styles/Home.module.css";
 
 export function Home() {
   const [user, setUser] = useUser();
@@ -29,12 +30,19 @@ export function Home() {
 
   return (
     user && (
-      <>
-        <h2>Bem vindo à sua conta {user.username}</h2>
-        <Balance user={user} />
-        <Transferir user={user} />
-        <Transacoes user={user} />
-      </>
+      <div className={styles["container"]}>
+        <h2>
+          Bem vindo à sua conta{" "}
+          <span id={styles["username"]}>{user.username}</span>
+        </h2>
+        <div className={styles["aligner"]}>
+          <div className={styles["sub-container"]}>
+            <Balance user={user} />
+            <Transferir user={user} />
+          </div>
+          <Transacoes user={user} />
+        </div>
+      </div>
     )
   );
 }

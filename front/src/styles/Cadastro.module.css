@@ -1,0 +1,13 @@
+.container {
+  padding: 2rem;
+  width: 40vw;
+}
+
+#submit {
+  margin-top: 5vh;
+}
+
+span {
+  color: brown;
+  margin-top: -2vh;
+}

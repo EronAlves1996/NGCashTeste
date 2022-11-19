@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { TransactionDataExposed, UserExposed } from "../../../types";
 import { apiCaller } from "../utils/apiCaller";
+import styles from "../styles/Transferir.module.css";
 
 export function Transferir({ user }: { user: UserExposed }) {
   const [username, setUsername] = useState("");
@@ -8,8 +9,8 @@ export function Transferir({ user }: { user: UserExposed }) {
   const [message, setMessage] = useState("");
 
   return (
-    <div>
-      <h4>Transferir</h4>
+    <div className={styles["container"]}>
+      <h3>Transferir</h3>
       <form>
         <label htmlFor="to">Transferir para: </label>
         <input

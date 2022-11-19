@@ -1,0 +1,25 @@
+.container {
+  display: flex;
+  flex-flow: column wrap;
+  padding: 2vh;
+}
+
+.sub-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.container h2 {
+  font-size: 3.7vh;
+}
+
+#username {
+  text-decoration: underline;
+  color: inherit;
+}
+
+.aligner {
+  width: 80vw;
+  align-self: center;
+}
