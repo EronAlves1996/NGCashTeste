@@ -17,8 +17,16 @@ const PREFIX = process.env.API_PREFIX;
  * @type {Router}
  */
 router.get(PREFIX + "validar", async (req, res) => {
-  res.status(200);
-  res.send(await validate(res.locals.id));
+  validate(res.locals.id)
+    .then((user) => {
+      res.status(200);
+      res.send(user);
+    })
+    .catch((err) => {
+      res.status(401);
+      res.cookie("jwt-login", "", { maxAge: 0 });
+      res.send({ message: "Invalid token" });
+    });
 });
 
 /**

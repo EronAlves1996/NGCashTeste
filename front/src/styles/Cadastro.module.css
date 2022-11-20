@@ -11,3 +11,7 @@ span {
   color: brown;
   margin-top: -2vh;
 }
+
+.error {
+  margin: 0;
+}

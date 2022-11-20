@@ -105,7 +105,7 @@ export function Cadastro() {
           >
             Cadastrar
           </button>
-          {errMess && <span>{errMess}</span>}
+          {errMess && <span className={styles["error"]}>{errMess}</span>}
         </form>
       </div>
     </>

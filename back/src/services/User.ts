@@ -12,7 +12,9 @@ dotenv.config();
 
 export async function validate(id: number): Promise<UserExposed> {
   const user = await findUserById(id);
-
+  if (!user) {
+    throw new Error("Usuário não encontrado");
+  }
   return {
     accountId: user?.account_id as number,
     id: user?.id,

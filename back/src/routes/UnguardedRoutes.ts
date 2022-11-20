@@ -24,7 +24,9 @@ router.post(PREFIX + "cadastro", (req, res) => {
     })
     .catch((err) => {
       res.status(422);
-      res.send({ message: err });
+      res.send({
+        message: "Username já existe ou senha não atinge os requerimentos",
+      });
     });
 });
 
