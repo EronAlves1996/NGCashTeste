@@ -8,5 +8,8 @@
   "private": true,
   "workspaces":[
     "back", "front"
-  ]
+  ],
+  "scripts" : {
+    "deploy": "npm run build --workspace front && npm run server --workspace back"
+  }
 }

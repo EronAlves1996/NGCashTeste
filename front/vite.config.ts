@@ -7,4 +7,7 @@ export default defineConfig({
   define: {
     "process.env": {},
   },
+  build: {
+    outDir: "../back/public/",
+  },
 });

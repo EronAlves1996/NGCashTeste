@@ -14,7 +14,16 @@ import { Home } from "./GuardedComps/Home";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<App />}>
+    <Route
+      path="/"
+      element={<App />}
+      errorElement={
+        <div>
+          <h2>Não encontrado!</h2>
+          <p>Favor verificar o endereço digitado</p>
+        </div>
+      }
+    >
       <Route index element={<Index />} />
       <Route path="/cadastro" element={<Cadastro />} />
       <Route path="/home" element={<Home />} />
