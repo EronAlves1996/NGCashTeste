@@ -1,11 +1,9 @@
 import { Router } from "express";
 import * as dotenv from "dotenv";
-import { validate } from "../services/validate";
 import { fetchAccountInfo } from "../services/fetchAccountInfo";
 import { TransactionDataExposed } from "../../../types";
-import { makeTransaction } from "../services/makeTransaction";
-import { fetchTransactions } from "../services/fetchTransactions";
-import { request } from "http";
+import { validate } from "../services/User";
+import { fetchTransactions, makeTransaction } from "../services/Transaction";
 dotenv.config();
 
 const router = Router();

@@ -1,10 +1,10 @@
 import { Router } from "express";
 import * as dotenv from "dotenv";
 import { RegisterDataExposed } from "../../../types";
-import { login } from "../services/login";
+import { login, register } from "../services/User";
+
 dotenv.config();
 const PREFIX = process.env.API_PREFIX;
-
 const router = Router();
 
 /**

@@ -1,9 +1,8 @@
-import { Accounts } from "@prisma/client";
 import { AccountExposed } from "../../../types";
-import { accounts } from "./dbAccess";
+import { findAccountById } from "./dbAccess";
 
 export async function fetchAccountInfo(id: number): Promise<AccountExposed> {
-  const account = await accounts.findFirst({ where: { user: { id: id } } });
+  const account = await findAccountById(id);
   return {
     balance: account?.balance.toNumber()!,
     id: account?.id,
