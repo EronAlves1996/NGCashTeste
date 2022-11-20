@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "migrate": "npx prisma migrate dev --name init",
     "server": "tsc && node ./bin/index.js"
   },
   "dependencies": {
