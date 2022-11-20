@@ -1,0 +1,38 @@
+.filters {
+  display: flex;
+  margin-top: 2vh;
+}
+
+select {
+  width: 15vw;
+}
+
+.container {
+  margin-top: 5vh;
+}
+
+table {
+  margin-top: 2vh;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th,
+td {
+  padding: 2vh 2vw;
+  text-align: center;
+}
+
+th,
+tfoot {
+  background-color: rgb(18, 70, 44);
+  font-size: large;
+}
+
+tfoot {
+  background-color: rgb(18, 36, 70);
+}
+
+tr:nth-child(even) {
+  background-color: rgb(87, 87, 87);
+}

@@ -60,7 +60,7 @@ export async function fetchTransactions(
     trans = trans.filter((transaction) =>
       type === "in"
         ? transaction.credited_account.user?.username === user?.username
-        : transaction.debited_account.user?.username === user?.account_id
+        : transaction.debited_account.user?.username === user?.username
     );
   }
 

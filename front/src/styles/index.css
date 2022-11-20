@@ -70,7 +70,8 @@ label {
   padding: 0.5rem;
 }
 
-input {
+input,
+select {
   border: none;
   border-radius: 5px;
   font-size: large;

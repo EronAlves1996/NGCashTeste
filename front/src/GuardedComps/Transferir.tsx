@@ -3,7 +3,15 @@ import { TransactionDataExposed, UserExposed } from "../../../types";
 import { apiCaller } from "../utils/apiCaller";
 import styles from "../styles/Transferir.module.css";
 
-export function Transferir({ user }: { user: UserExposed }) {
+export function Transferir({
+  user,
+  triggerReload,
+  reload,
+}: {
+  user: UserExposed;
+  triggerReload: any;
+  reload: boolean;
+}) {
   const [username, setUsername] = useState("");
   const [value, setValue] = useState(0);
   const [message, setMessage] = useState("");
@@ -44,13 +52,18 @@ export function Transferir({ user }: { user: UserExposed }) {
               } as TransactionDataExposed
             );
             setMessage((await response.json()).message);
+            setTimeout(() => {
+              setMessage("");
+            }, 5000);
+
             setUsername("");
             setValue(0);
+            triggerReload(!reload);
           }}
         >
           Transferir!
         </button>
-        {message !== "" && <span>{message}</span>}
+        {message !== "" && <span className={styles["message"]}>{message}</span>}
       </form>
     </div>
   );

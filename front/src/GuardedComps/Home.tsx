@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserExposed } from "../../../types";
 import { useUser } from "../App";
@@ -10,6 +10,7 @@ import styles from "../styles/Home.module.css";
 
 export function Home() {
   const [user, setUser] = useUser();
+  const [reload, triggerReload] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,16 +32,29 @@ export function Home() {
   return (
     user && (
       <div className={styles["container"]}>
-        <h2>
-          Bem vindo à sua conta{" "}
-          <span id={styles["username"]}>{user.username}</span>
-        </h2>
+        <div className={styles["header"]}>
+          <h2>
+            Bem vindo à sua conta{" "}
+            <span id={styles["username"]}>{user.username}</span>
+          </h2>
+          <button
+            type="button"
+            onClick={() => {
+              apiCaller("logout", "GET", {
+                "Content-Type": "application/json",
+              });
+              navigate("/");
+            }}
+          >
+            Sair
+          </button>
+        </div>
         <div className={styles["aligner"]}>
           <div className={styles["sub-container"]}>
-            <Balance user={user} />
-            <Transferir user={user} />
+            <Balance {...{ user, reload }} />
+            <Transferir {...{ user, triggerReload, reload }} />
           </div>
-          <Transacoes user={user} />
+          <Transacoes {...{ user, reload }} />
         </div>
       </div>
     )

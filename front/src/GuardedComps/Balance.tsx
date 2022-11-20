@@ -3,7 +3,13 @@ import { AccountExposed, UserExposed } from "../../../types";
 import { apiCaller } from "../utils/apiCaller";
 import styles from "../styles/Balance.module.css";
 
-export function Balance({ user }: { user: UserExposed }) {
+export function Balance({
+  user,
+  reload,
+}: {
+  user: UserExposed;
+  reload: boolean;
+}) {
   const [account, setAccount] = useState<AccountExposed | null>(null);
 
   useEffect(() => {
@@ -13,7 +19,7 @@ export function Balance({ user }: { user: UserExposed }) {
       });
       setAccount((await response.json()) as AccountExposed);
     })();
-  }, [user]);
+  }, [user, reload]);
 
   return (
     account && (
