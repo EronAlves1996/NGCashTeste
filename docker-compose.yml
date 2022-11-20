@@ -1,9 +1,18 @@
 services:
-  db:
+  postgres-db:
     image: "postgres:latest"
     restart: "always"
+    hostname: postgres-db
     environment:
       POSTGRES_PASSWORD: "182596"
       POSTGRES_DB: "ngcashdb"
     ports:
       - "5432:5432"
+
+  app:
+    build: .
+    restart: "always"
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres-db
