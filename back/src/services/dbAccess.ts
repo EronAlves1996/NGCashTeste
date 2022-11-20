@@ -1,7 +1,40 @@
 import { PrismaClient } from "@prisma/client";
+import { sha256 } from "js-sha256";
 
-export const prisma = new PrismaClient();
+const prisma = new PrismaClient();
 
-export const accounts = prisma.accounts;
-export const users = prisma.users;
-export const transactions = prisma.transactions;
+const accounts = prisma.accounts;
+const users = prisma.users;
+const transactions = prisma.transactions;
+
+export async function findUserById(id: number) {
+  return await users.findFirst({ where: { id: id } });
+}
+
+export async function createUserAndNewAccount(
+  username: string,
+  password: string
+) {
+  return await users.create({
+    data: {
+      password: sha256(password),
+      username: username,
+      account: {
+        create: {
+          balance: 100,
+        },
+      },
+    },
+  });
+}
+
+export async function findUserByUsernameAndPassword(
+  username: string,
+  password: string
+) {
+  return await users.findFirst({
+    where: {
+      AND: [{ username: username }, { password: password }],
+    },
+  });
+}

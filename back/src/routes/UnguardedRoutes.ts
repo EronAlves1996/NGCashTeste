@@ -1,6 +1,5 @@
 import { Router } from "express";
 import * as dotenv from "dotenv";
-import { register } from "../services/register";
 import { RegisterDataExposed } from "../../../types";
 import { login } from "../services/login";
 dotenv.config();

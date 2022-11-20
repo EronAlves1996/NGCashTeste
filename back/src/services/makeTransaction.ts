@@ -1,6 +1,5 @@
 import { Prisma } from "@prisma/client";
 import { TransactionDataExposed } from "../../../types";
-import { accounts, transactions, users } from "./dbAccess";
 
 export async function makeTransaction(
   transaction: TransactionDataExposed,
